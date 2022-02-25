@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+    <META HTTP-EQUIV="Content-Language" CONTENT="fa">
+    <title>Bootstrap 101 Template</title>
+
+    <link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="css/sweetalert2.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+
+<body>
+
+    <section id="navbar-section">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary pr-5">
+
+            <h2 class="navbar-text text-light">
+                آزمون آنلاین
+            </h2>
+        </nav>
+
+
+
+    </section>
+
+    <section class="test-create">
+
+        <div class="container">
+
+            <div class="div-container pt-5 text-center">
+
+                <div class="form-holder">
+
+                    <form id="submit-test" name='testForm' action="#" method="post">
+
+                        <h6>نام آزمون:</h6>
+                        <input name="testName" id="test-name" type="text" dir="rtl">
+                        <p class="d-none text-danger errors" id="name-error"></p>
+                        <h6 class="mt-2"> تاریخ ثبت آزمون:</h6>
+                        <input name="testSubDate" id="test-sub-date" type="text" dir="rtl">
+                        <p class="d-none text-danger errors" id="sub-date-error"></p>
+                        <h6 class="mt-2"> تاریخ برگزاری آزمون:</h6>
+                        <input name="testRunDate" id="test-run-date" type="text" dir="rtl"> </br>
+                        <p class="d-none text-danger errors" id="run-date-error"></p>
+                        <h6 class="mt-2"> تعداد سؤالات :</h6>
+                        <input name="testًQuestNum" id="test-quest-num" type="text" dir="rtl"> </br>
+                        <p class="d-none text-danger errors" id="quest-num-error"></p>
+                        <input class="test-create mt-3" type="button" value="ثبت آزمون" onclick="validationFunction()">
+
+                    </form>
+
+                    <form id="quest-creator" class="d-none mt-5" name="questionForm" action="#" method="post">
+
+                        <div id="text-box" class="form-group">
+                            <label for="questText">متن سؤال</label>
+                            <textarea name="questText" class="form-control" id="questionText" rows="3"></textarea>
+                            <p class="d-none text-danger errors" id="questText-error"></p>
+                        </div>
+                        <div id="test"></div>
+
+                        <div id="tests" class="form-check">
+                            <span class="m-2">
+                                <input class="form-check-input" type="radio" name="testBox" id="radioTest1"
+                                    value="option1">
+                                <input id="qText1" name="test1" class="form-check-label mr-4" type="text"
+                                    placeholder="گزینه ۱">
+                            </span>
+                            <span class="m-2">
+                                <input class="form-check-input" type="radio" name="testBox" id="radioTest2"
+                                    value="option2">
+                                <input id="qText2" name="test2" class="form-check-label mr-4" type="text"
+                                    placeholder="گزینه ۲">
+                            </span>
+                            <span class="m-2">
+                                <input class="form-check-input" type="radio" name="testBox" id="radioTest3"
+                                    value="option3">
+                                <input id="qText3" name="test3" class="form-check-label mr-4" type="text"
+                                    placeholder="گزینه ۳">
+                            </span>
+                            <span class="m-2">
+                                <input class="form-check-input" type="radio" name="testBox" id="radioTest4"
+                                    value="option4">
+                                <input id="qText4" name="test4" class="form-check-label mr-4" type="text"
+                                    placeholder="گزینه ۴">
+                            </span>
+                            <p class="d-none text-danger errors mt-2" id="questTest-error"></p>
+                            <p class="d-none text-danger errors mt-2" id="testBox-error"></p>
+                        </div>
+
+                        <input type="hidden" id="question-number" value="1">
+
+                        <p id="finish-questions" class="d-none mt-4 text-warning">سؤالات تکمیل شدند. در صورت نیاز به ویرایش یا بررسی سؤالات روی گزینه سؤال قبلی کلیک کنید. در غیر این صورت، روی ثبت نهایی سؤالات کلیک کنید.</p>
+                        <input id="next-question" class="mt-4" type="button" value="سؤال بعدی"
+                            onclick="nextQuestionFunction()">
+                        <input id="previous-question" class="d-none mt-4" type="button" value="سؤال قبلی"
+                            onclick="previousQuestionFunction()">
+                        <input id="submit-questions" class="d-none mt-4" type="button" value="ثبت نهایی سؤالات"
+                            onclick="finalSubmit()">
+
+
+                    </form>
+
+                </div>
+
+                <div class="table-holder mt-5">
+
+                    <table class="table text-right">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">ردیف</th>
+                                <th scope="col">نام آزمون</th>
+                                <th scope="col">تاریخ برگزاری آزمون</th>
+                                <th scope="col">تاریخ ثبت آزمون</th>
+                                <th scope="col">تعداد سؤالات</th>
+                                <th scope="col">برگزاری</th>
+                                <th scope="col">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="main-table">
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+    <section id="answer-section" class="d-none text-center mt-5">
+        <div id="answer-content">
+
+        </div>
+
+        <input id="next-answer" class="mt-4" type="button" value="سؤال بعدی" onclick="nextAnswer()">
+        <input id="previous-answer" class="mt-4" type="button" value="سؤال قبلی" onclick="previousAnswer()">
+        <input id="submit-answers" class="d-none mt-4" type="button" value="ثبت نهایی پاسخ‌ها" onclick="submitAnswers()">
+
+        <input type="hidden" id="answer-number" value="1">
+    </section>
+
+
+</body>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="js/sweetalert2.all.min.js"></script>
+
+<script src="js/main.js"></script>
+
+</html>
