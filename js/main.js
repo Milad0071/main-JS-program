@@ -63,26 +63,26 @@ function validationFunction() {
 
       let table = document.getElementById('main-table')
 
-      table.innerHTML = `<tr id="class-name-${num}"> 
+      table.innerHTML = `<tr id="class-name-${num}">
       <td scope="col">${num}</td>
       <td scope="col">${testName}</td>
       <td scope="col">${testSubDate}</td>
       <td scope="col">${testRunDate}</td>
       <td scope="col">${testًQuestNum}</td>
       <td scope="col">
-      
+
          <input id="question-creator-button" type="button" value="ایجاد سؤال" onclick="createQuestionFunction()">
          <input id="run-test" class="d-none" type="button" value="برگزاری آزمون" onclick="runTestFunction()">
          <p id="run-text" class="d-none">در حال برگزاری</p>
-         
+
       </td>
       <td scope="col" >
-         
+
          <span class="trash fa fa-trash text-danger" onclick="deleteRow(${num})"></span>
          <span class="fa fa-edit text-primary" onclick="editTest()")</span>
-         
+
       </td>
-   
+
       </tr>`;
       document.getElementById("submit-test").classList.add("d-none")
    }
@@ -137,15 +137,7 @@ function nextQuestionFunction() {
 
 
       document.getElementById("previous-question").classList.add("d-none")
-      if (questionNumber.value == questionsCount) {
 
-         document.getElementById("text-box").classList.add("d-none")
-         document.getElementById("tests").classList.add("d-none")
-         document.getElementById("next-question").classList.add("d-none")
-         document.getElementById("submit-questions").classList.remove("d-none")
-         document.getElementById("finish-questions").classList.remove("d-none")
-         document.getElementById("previous-question").classList.remove("d-none")
-      }
 
       document.getElementById('questText-error').classList.add("d-none");
       document.getElementById('questTest-error').classList.add("d-none");
@@ -207,6 +199,16 @@ function nextQuestionFunction() {
 
       if (validation) {
 
+         if (questionNumber.value == questionsCount) {
+
+            document.getElementById("text-box").classList.add("d-none")
+            document.getElementById("tests").classList.add("d-none")
+            document.getElementById("next-question").classList.add("d-none")
+            document.getElementById("submit-questions").classList.remove("d-none")
+            document.getElementById("finish-questions").classList.remove("d-none")
+            document.getElementById("previous-question").classList.remove("d-none")
+         }
+
          var consoleQuestion = new nextQuestionFunction(questText, test1, test2, test3, test4, number, answer)
 
          document.getElementById('questionText').value = ""
@@ -253,19 +255,19 @@ function previousQuestionFunction() {
    let questionNumber = document.getElementById("question-number")
    let questionsCount = document.getElementById("test-quest-num").value
 
-   let question = questions [--questionNumber.value]
+   let question = questions[--questionNumber.value]
 
-   document.getElementById("finalSubmit").classList.add("d-none")
-   document.getElementById("finish-questions").classList.add("d-none")
 
-   if (questionNumber.value < questionsCount) {
+   if (question !== undefined) {
 
-      if (questionNumber.value == 1) {
 
-         document.getElementById("next-question").classList.remove ("d-none")
-         document.getElementById("previous-question").classList.add("d-none")
+      if (questionNumber.value === questionsCount) {
+
+         document.getElementById("submit-questions").classList.add("d-none")
+         document.getElementById("finish-questions").classList.add("d-none")
 
       }
+
 
       document.getElementById("text-box").classList.remove("d-none")
       document.getElementById("tests").classList.remove("d-none")
@@ -273,20 +275,28 @@ function previousQuestionFunction() {
       document.getElementById("submit-questions").classList.add("d-none")
       document.getElementById("finish-questions").classList.add("d-none")
       document.getElementById("previous-question").classList.remove("d-none")
-      
-      
 
-      if (question !== undefined) {
+      if (questionNumber.value == 1) {
 
-      document.forms["questionForm"]["questText"].value = questions [questText]
-      document.forms["questionForm"]["test1"].value = questions [test1]
-      document.forms["questionForm"]["test2"].value = questions [test2]
-      document.forms["questionForm"]["test3"].value = questions [test3]
-      document.forms["questionForm"]["test4"].value = questions [test4]
-      document.querySelector('input[name="testBox"]:checked') = answer
+         document.getElementById("next-question").classList.remove("d-none")
+         document.getElementById("previous-question").classList.add("d-none")
 
       }
-      
+
+
+      document.forms["questionForm"]["questText"].value = question.questionText
+      document.forms["questionForm"]["test1"].value = question.questionTest1
+      document.forms["questionForm"]["test2"].value = question.questionTest2
+      document.forms["questionForm"]["test3"].value = question.questionTest3
+      document.forms["questionForm"]["test4"].value = question.questionTest4
+      let ans = question.answer
+      document.querySelectorAll("input[value = ans]").checked = true
+
+   } else {
+
+      document.getElementById('previous-error').innerHTML = 'به سوال اول رسیدید.';
+      document.getElementById('previous-error').classList.remove("d-none");
+
    }
 
 }
@@ -337,7 +347,7 @@ function nextAnswer() {
             <label for="answer3" id="answer-3-text" class = "ml-2">${question.questionTest3}</label>
             <input class="form-check-input mr-2" type="radio" name="testBox" id="answer3" value="option3">
          </span>
-         <span class="m-5"> 
+         <span class="m-5">
             <label for="answer4" id="answer-4-text" class = "ml-2">${question.questionTest4}</label>
             <input class="form-check-input mr-2" type="radio" name="testBox" id="answer4" value="option4">
          </span>
@@ -392,7 +402,7 @@ function previousAnswer() {
             <label for="answer3" id="answer-3-text" class = "ml-2">${question.questionTest3}</label>
             <input class="form-check-input mr-2" type="radio" name="testBox" id="answer3" value="option3">
          </span>
-         <span class="m-5"> 
+         <span class="m-5">
             <label for="answer4" id="answer-4-text" class = "ml-2">${question.questionTest4}</label>
             <input class="form-check-input mr-2" type="radio" name="testBox" id="answer4" value="option4">
          </span>
@@ -438,5 +448,4 @@ function submitAnswers() {
    }
 
 }
-
 
